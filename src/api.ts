@@ -8,7 +8,7 @@ interface Restaurant {
   ratings: number;
 }
 
-const restaurants: Restaurant[] = [
+/* const restaurants: Restaurant[] = [
   {
     id: "1",
     name: "The Golden Spoon",
@@ -120,18 +120,56 @@ const restaurants: Restaurant[] = [
     ratings: 150,
     image: "https://source.unsplash.com/480x300/?restaurant&random=12",
   },
-];
+]; */
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
+/* const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+ */
 const api = {
   list: async (): Promise<Restaurant[]> => {
-    await sleep(750);
+    // Obtenemos la información de Google Sheets en formato texto y la dividimos por líneas, nos saltamos la primera línea porque es el encabezado
+    const [, ...data] = await fetch(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTUPEkmTRRMTfulJ4_5UlDfG9o_z2YmIooLCoakHY2hHa_hmAWgrcBA4pMRLEPdopQD9dMVlIDEX6V1/pub?output=csv",
+    )
+      .then((res) => res.text())
+      .then((text) => text.split("\n"));
 
+    // Convertimos cada línea en un objeto Restaurant, asegúrate de que los campos no posean `,`
+    const restaurants: Restaurant[] = data.map((row) => {
+      const [id, name, description, address, score, ratings, image] = row.split(",");
+
+      return {
+        id,
+        name,
+        description,
+        address,
+        score: Number(score),
+        ratings: Number(ratings),
+        image,
+      };
+    });
+
+    // Lo retornamos
     return restaurants;
   },
   fetch: async (id: Restaurant["id"]): Promise<Restaurant> => {
-    await sleep(750);
+    const [, ...data] = await fetch(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTUPEkmTRRMTfulJ4_5UlDfG9o_z2YmIooLCoakHY2hHa_hmAWgrcBA4pMRLEPdopQD9dMVlIDEX6V1/pub?output=csv",
+    )
+      .then((res) => res.text())
+      .then((text) => text.split("\n"));
+    const restaurants: Restaurant[] = data.map((row) => {
+      const [id, name, description, address, score, ratings, image] = row.split(",");
+
+      return {
+        id,
+        name,
+        description,
+        address,
+        score: Number(score),
+        ratings: Number(ratings),
+        image,
+      };
+    });
 
     const restaurant = restaurants.find((restaurant) => restaurant.id === id);
 
