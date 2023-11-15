@@ -1,4 +1,19 @@
+import type {Metadata} from "next";
+
 import api from "@/api";
+
+export const generateMetadata = async ({
+  params: {id},
+}: {
+  params: {id: string};
+}): Promise<Metadata> => {
+  const restaurant = await api.fetch(id);
+
+  return {
+    title: restaurant.name,
+    description: restaurant.description,
+  };
+};
 
 export default async function RestaurantPage({params: {id}}: {params: {id: string}}) {
   const restaurant = await api.fetch(id);

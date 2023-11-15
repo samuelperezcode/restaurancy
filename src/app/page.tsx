@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import api from "@/api";
 
 export default async function HomePage() {
@@ -7,7 +9,7 @@ export default async function HomePage() {
     <section className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
       {restaurants.map((restaurant) => {
         return (
-          <article key={restaurant.id}>
+          <Link key={restaurant.id} href={`/${restaurant.id}`}>
             <img
               alt={restaurant.name}
               className="mb-3 h-[300px] w-full object-cover"
@@ -22,7 +24,7 @@ export default async function HomePage() {
               </small>
             </h2>
             <p className="opacity-90">{restaurant.description}</p>
-          </article>
+          </Link>
         );
       })}
     </section>
