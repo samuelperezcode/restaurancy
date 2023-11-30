@@ -11,6 +11,7 @@ export default function SearchBox() {
     event.preventDefault();
 
     // Obtenemos el valor del input
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const query = event.currentTarget.query.value;
 
     // Redireccionamos al index con una query
